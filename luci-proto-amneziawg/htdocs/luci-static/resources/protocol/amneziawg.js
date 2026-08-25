@@ -291,6 +291,36 @@ return network.registerProtocol('amneziawg', {
         o.datatype = 'string';
         o.optional = true;
 
+        o = s.taboption('amneziawg', form.Value, 'awg_header_protection_key', _('Header Protection Key'), _('Optional. Base64-encoded key for header protection.'));
+        o.datatype = 'string';
+        o.optional = true;
+
+        o = s.taboption('amneziawg', form.Value, 'awg_rekey_after_time', _('Rekey After Time'), _('Optional. Time in seconds (e.g. 100-120).'));
+        o.datatype = 'string';
+        o.optional = true;
+
+        o = s.taboption('amneziawg', form.Value, 'awg_rekey_timeout', _('Rekey Timeout'), _('Optional. Timeout in seconds (e.g. 3-8).'));
+        o.datatype = 'string';
+        o.optional = true;
+
+        o = s.taboption('amneziawg', form.Value, 'awg_reject_after_time', _('Reject After Time'), _('Optional. Time in seconds (e.g. 150-180).'));
+        o.datatype = 'string';
+        o.optional = true;
+
+        o = s.taboption('amneziawg', form.Value, 'awg_keepalive_timeout', _('Keepalive Timeout'), _('Optional. Timeout in seconds (e.g. 7-13).'));
+        o.datatype = 'string';
+        o.optional = true;
+
+        o = s.taboption('amneziawg', form.Value, 'awg_max_handshake_attempts', _('Max Handshake Attempts'), _('Optional. Number of attempts (e.g. 15-20).'));
+        o.datatype = 'string';
+        o.optional = true;
+
+        o = s.taboption('amneziawg', form.Value, 'awg_content_padding_addition', _('Content Padding Addition'), _('Optional. Padding size in bytes (e.g. 10-100).'));
+        o.datatype = 'string';
+        o.optional = true;
+
+        // -- peers -----------------------------------------------------------------------
+
 		// -- peers -----------------------------------------------------------------------
 
 		try {
@@ -414,8 +444,8 @@ return network.registerProtocol('amneziawg', {
 				if (pconf.peer_persistentkeepalive == 'off' || pconf.peer_persistentkeepalive == '0')
 					delete pconf.peer_persistentkeepalive;
 
-				if (!stubValidator.apply('port', pconf.peer_persistentkeepalive || '0'))
-					return _('PersistentKeepAlive setting is invalid');
+			  //if (!stubValidator.apply('port', pconf.peer_persistentkeepalive || '0'))
+				//	return _('PersistentKeepAlive setting is invalid');
 			}
 
 			return config;
@@ -460,8 +490,16 @@ return network.registerProtocol('amneziawg', {
 					s.getOption('awg_i3').getUIElement(s.section).setValue(config.interface_i3 || '');
 					s.getOption('awg_i4').getUIElement(s.section).setValue(config.interface_i4 || '');
 					s.getOption('awg_i5').getUIElement(s.section).setValue(config.interface_i5 || '');
+                    
+                    s.getOption('awg_header_protection_key').getUIElement(s.section).setValue(config.interface_headerprotectionkey || '');
+                    s.getOption('awg_rekey_after_time').getUIElement(s.section).setValue(config.interface_rekeyaftertime || '');
+                    s.getOption('awg_rekey_timeout').getUIElement(s.section).setValue(config.interface_rekeytimeout || '');
+                    s.getOption('awg_reject_after_time').getUIElement(s.section).setValue(config.interface_rejectaftertime || '');
+                    s.getOption('awg_keepalive_timeout').getUIElement(s.section).setValue(config.interface_keepalivetimeout || '');
+                    s.getOption('awg_max_handshake_attempts').getUIElement(s.section).setValue(config.interface_maxhandshakeattempts || '');
+                    s.getOption('awg_content_padding_addition').getUIElement(s.section).setValue(config.interface_contentpaddingaddition || '');
 
-					if (config.interface_dns)
+                    if (config.interface_dns)
 						s.getOption('dns').getUIElement(s.section).setValue(config.interface_dns);
 
 					for (var i = 0; i < config.peers.length; i++) {
@@ -780,7 +818,7 @@ return network.registerProtocol('amneziawg', {
 
 		o = ss.option(form.Value, 'persistent_keepalive', _('Persistent Keep Alive'), _('Optional. Seconds between keep alive messages. Default is 0 (disabled). Recommended value if this device is behind a NAT is 25.'));
 		o.modalonly = true;
-		o.datatype = 'range(0,65535)';
+		o.datatype = 'string';
 		o.placeholder = '0';
 
 
@@ -808,8 +846,15 @@ return network.registerProtocol('amneziawg', {
 				i2 = s.formvalue(s.section, 'awg_i2'),
 				i3 = s.formvalue(s.section, 'awg_i3'),
 				i4 = s.formvalue(s.section, 'awg_i4'),
-				i5 = s.formvalue(s.section, 'awg_i5'),
-			    prv = this.section.formvalue(section_id, 'private_key'),
+                i5 = s.formvalue(s.section, 'awg_i5'),
+                hpk = s.formvalue(s.section, 'awg_header_protection_key'),
+                rat = s.formvalue(s.section, 'awg_rekey_after_time'),
+                rt = s.formvalue(s.section, 'awg_rekey_timeout'),
+                rjat = s.formvalue(s.section, 'awg_reject_after_time'),
+                kat = s.formvalue(s.section, 'awg_keepalive_timeout'),
+                mha = s.formvalue(s.section, 'awg_max_handshake_attempts'),
+                cpa = s.formvalue(s.section, 'awg_content_padding_addition'),
+                prv = this.section.formvalue(section_id, 'private_key'),
 			    psk = this.section.formvalue(section_id, 'preshared_key'),
 			    eport = this.section.formvalue(section_id, 'endpoint_port'),
 			    keep = this.section.formvalue(section_id, 'persistent_keepalive');
@@ -840,9 +885,16 @@ return network.registerProtocol('amneziawg', {
 				i2 ? 'I2 = ' + i2 : '# I2 not defined',
 				i3 ? 'I3 = ' + i3 : '# I3 not defined',
 				i4 ? 'I4 = ' + i4 : '# I4 not defined',
-				i5 ? 'I5 = ' + i5 : '# I5 not defined',
-				'',
-				'[Peer]',
+                i5 ? 'I5 = ' + i5 : '# I5 not defined',
+                hpk ? 'HeaderProtectionKey = ' + hpk : '# HeaderProtectionKey not defined',
+                rat ? 'RekeyAfterTime = ' + rat : '# RekeyAfterTime not defined',
+                rt ? 'RekeyTimeout = ' + rt : '# RekeyTimeout not defined',
+                rjat ? 'RejectAfterTime = ' + rjat : '# RejectAfterTime not defined',
+                kat ? 'KeepaliveTimeout = ' + kat : '# KeepaliveTimeout not defined',
+                mha ? 'MaxHandshakeAttempts = ' + mha : '# MaxHandshakeAttempts not defined',
+                cpa ? 'ContentPaddingAddition = ' + cpa : '# ContentPaddingAddition not defined',
+                '',
+                '[Peer]',
 				'PublicKey = ' + pub,
 				psk ? 'PresharedKey = ' + psk : '# PresharedKey not used',
 				ips && ips.length ? 'AllowedIPs = ' + ips.join(', ') : '# AllowedIPs not defined',
