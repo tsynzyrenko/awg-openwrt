@@ -133,7 +133,7 @@ install_awg_packages() {
     SUBTARGET=$(ubus call system board | jsonfilter -e '@.release.target' | cut -d '/' -f 2)
     VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
     PKGPOSTFIX_BASE="_v${VERSION}_${PKGARCH}_${TARGET}_${SUBTARGET}"
-    BASE_URL="https://github.com/Slava-Shchipunov/awg-openwrt/releases/download/"
+    BASE_URL="https://github.com/tsynzyrenko/awg-openwrt/releases/download/"
 
     # Определяем версию AWG протокола (2.0 для OpenWRT >= 23.05.6 и >= 24.10.3)
     AWG_VERSION="1.0"
@@ -297,6 +297,13 @@ configure_amneziawg_interface() {
         read -r -p "Enter I3 value (from [Interface]) [optional, leave blank to skip]:"$'\n' AWG_I3
         read -r -p "Enter I4 value (from [Interface]) [optional, leave blank to skip]:"$'\n' AWG_I4
         read -r -p "Enter I5 value (from [Interface]) [optional, leave blank to skip]:"$'\n' AWG_I5
+        read -r -p "Enter HeaderProtectionKey (from [Interface]) [optional]:"$'\n' AWG_HPK
+        read -r -p "Enter RekeyAfterTime (from [Interface]) [optional, e.g. 100-120]:"$'\n' AWG_RAT
+        read -r -p "Enter RekeyTimeout (from [Interface]) [optional, e.g. 3-8]:"$'\n' AWG_RT
+        read -r -p "Enter RejectAfterTime (from [Interface]) [optional, e.g. 150-180]:"$'\n' AWG_RJAT
+        read -r -p "Enter KeepaliveTimeout (from [Interface]) [optional, e.g. 7-13]:"$'\n' AWG_KAT
+        read -r -p "Enter MaxHandshakeAttempts (from [Interface]) [optional, e.g. 15-20]:"$'\n' AWG_MHA
+        read -r -p "Enter ContentPaddingAddition (from [Interface]) [optional, e.g. 10-100]:"$'\n' AWG_CPA
     fi
 
     uci set network.${INTERFACE_NAME}=interface
@@ -324,6 +331,13 @@ configure_amneziawg_interface() {
         [ -n "$AWG_I3" ] && uci set network.${INTERFACE_NAME}.awg_i3=$AWG_I3
         [ -n "$AWG_I4" ] && uci set network.${INTERFACE_NAME}.awg_i4=$AWG_I4
         [ -n "$AWG_I5" ] && uci set network.${INTERFACE_NAME}.awg_i5=$AWG_I5
+        [ -n "$AWG_HPK" ] && uci set network.${INTERFACE_NAME}.awg_header_protection_key=$AWG_HPK
+        [ -n "$AWG_RAT" ] && uci set network.${INTERFACE_NAME}.awg_rekey_after_time=$AWG_RAT
+        [ -n "$AWG_RT" ] && uci set network.${INTERFACE_NAME}.awg_rekey_timeout=$AWG_RT
+        [ -n "$AWG_RJAT" ] && uci set network.${INTERFACE_NAME}.awg_reject_after_time=$AWG_RJAT
+        [ -n "$AWG_KAT" ] && uci set network.${INTERFACE_NAME}.awg_keepalive_timeout=$AWG_KAT
+        [ -n "$AWG_MHA" ] && uci set network.${INTERFACE_NAME}.awg_max_handshake_attempts=$AWG_MHA
+        [ -n "$AWG_CPA" ] && uci set network.${INTERFACE_NAME}.awg_content_padding_addition=$AWG_CPA
     fi
 
     if ! uci show network | grep -q ${CONFIG_NAME}; then
