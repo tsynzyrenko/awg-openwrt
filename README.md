@@ -1,3 +1,8 @@
+# ⚠️ ВНИМАНИЕ: ПРОЕКТ В СТАДИИ НАСТРОЙКИ И ТЕСТИРОВАНИЯ ⚠️
+**Пожалуйста, пока не используйте скрипты из этого репозитория. Идет обновление инфраструктуры до версии AmneziaWG 3.1. Как только всё будет готово, эта надпись исчезнет.**
+--- Если у вас версия 24.10.2 то wget -O amneziawg-install.sh https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh && sh amneziawg-install.sh  То все работает. 
+
+
 ![Downloads](https://img.shields.io/github/downloads/Slava-Shchipunov/awg-openwrt/total.svg)
 
 # Пакеты amneziawg для роутеров с прошивкой OpenWRT
