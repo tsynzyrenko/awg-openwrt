@@ -37,6 +37,13 @@ proto_amneziawg_init_config() {
 	proto_config_add_string "awg_i3"
 	proto_config_add_string "awg_i4"
 	proto_config_add_string "awg_i5"
+	proto_config_add_string "awg_header_protection_key"
+    proto_config_add_string "awg_rekey_after_time"
+    proto_config_add_string "awg_rekey_timeout"
+    proto_config_add_string "awg_reject_after_time"
+    proto_config_add_string "awg_keepalive_timeout"
+    proto_config_add_string "awg_max_handshake_attempts"
+    proto_config_add_string "awg_content_padding_addition"
 # shellcheck disable=SC2034
 	available=1
 # shellcheck disable=SC2034
@@ -190,6 +197,13 @@ proto_amneziawg_setup() {
 	local awg_i3
 	local awg_i4
 	local awg_i5
+	local awg_header_protection_key
+    local awg_rekey_after_time
+    local awg_rekey_timeout
+    local awg_reject_after_time
+    local awg_keepalive_timeout
+    local awg_max_handshake_attempts
+    local awg_content_padding_addition
 
 	ensure_key_is_generated "${config}"
 
@@ -219,6 +233,13 @@ proto_amneziawg_setup() {
 	config_get awg_i3 "${config}" "awg_i3"
 	config_get awg_i4 "${config}" "awg_i4"
 	config_get awg_i5 "${config}" "awg_i5"
+	config_get awg_header_protection_key "${config}" "awg_header_protection_key"
+    config_get awg_rekey_after_time "${config}" "awg_rekey_after_time"
+    config_get awg_rekey_timeout "${config}" "awg_rekey_timeout"
+    config_get awg_reject_after_time "${config}" "awg_reject_after_time"
+    config_get awg_keepalive_timeout "${config}" "awg_keepalive_timeout"
+    config_get awg_max_handshake_attempts "${config}" "awg_max_handshake_attempts"
+    config_get awg_content_padding_addition "${config}" "awg_content_padding_addition"
 
 	if proto_amneziawg_is_kernel_mode; then
 		logger -t "amneziawg" "info: using kernel-space kmod-amneziawg for ${AWG}"
@@ -295,6 +316,27 @@ proto_amneziawg_setup() {
 	if [ "${awg_i5}" ]; then
 		echo "I5=${awg_i5}" >> "${awg_cfg}"
 	fi
+	if [ "${awg_header_protection_key}" ]; then
+        echo "HeaderProtectionKey=${awg_header_protection_key}" >> "${awg_cfg}"
+    fi
+    if [ "${awg_rekey_after_time}" ]; then
+        echo "RekeyAfterTime=${awg_rekey_after_time}" >> "${awg_cfg}"
+    fi
+    if [ "${awg_rekey_timeout}" ]; then
+        echo "RekeyTimeout=${awg_rekey_timeout}" >> "${awg_cfg}"
+    fi
+    if [ "${awg_reject_after_time}" ]; then
+        echo "RejectAfterTime=${awg_reject_after_time}" >> "${awg_cfg}"
+    fi
+    if [ "${awg_keepalive_timeout}" ]; then
+        echo "KeepaliveTimeout=${awg_keepalive_timeout}" >> "${awg_cfg}"
+    fi
+    if [ "${awg_max_handshake_attempts}" ]; then
+        echo "MaxHandshakeAttempts=${awg_max_handshake_attempts}" >> "${awg_cfg}"
+    fi
+    if [ "${awg_content_padding_addition}" ]; then
+        echo "ContentPaddingAddition=${awg_content_padding_addition}" >> "${awg_cfg}"
+    fi
 	config_foreach proto_amneziawg_setup_peer "amneziawg_${config}"
 
 	# Apply configuration file
