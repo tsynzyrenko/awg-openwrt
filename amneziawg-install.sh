@@ -48,9 +48,9 @@ is_pkg_installed() {
 install_local_pkg() {
     pkg_file="$1"
     if [ "$PKG_MANAGER" = "apk" ]; then
-        apk add --allow-untrusted "$pkg_file"
+        apk add --allow-untrusted --force-overwrite "$pkg_file"
     else
-        opkg install "$pkg_file"
+        opkg install --force-reinstall "$pkg_file"
     fi
 }
 
@@ -135,7 +135,7 @@ install_awg_packages() {
     PKGPOSTFIX_BASE="_v${VERSION}_${PKGARCH}_${TARGET}_${SUBTARGET}"
     BASE_URL="https://github.com/tsynzyrenko/awg-openwrt/releases/download/"
 
-    # Определяем версию AWG протокола (2.0 для OpenWRT >= 23.05.6 и >= 24.10.3)
+    # Определяем версию AWG протокола (2.0 для OpenWRT >= 23.05.6 и >= 24.10.0)
     AWG_VERSION="1.0"
     MAJOR_VERSION=$(echo "$VERSION" | cut -d '.' -f 1)
     MINOR_VERSION=$(echo "$VERSION" | cut -d '.' -f 2)
@@ -143,7 +143,7 @@ install_awg_packages() {
 
     if [ "$MAJOR_VERSION" -gt 24 ] || \
        [ "$MAJOR_VERSION" -eq 24 -a "$MINOR_VERSION" -gt 10 ] || \
-       [ "$MAJOR_VERSION" -eq 24 -a "$MINOR_VERSION" -eq 10 -a "$PATCH_VERSION" -ge 3 ] || \
+       [ "$MAJOR_VERSION" -eq 24 -a "$MINOR_VERSION" -eq 10 -a "$PATCH_VERSION" -ge 0 ] || \
        [ "$MAJOR_VERSION" -eq 23 -a "$MINOR_VERSION" -eq 5 -a "$PATCH_VERSION" -ge 6 ]; then
         AWG_VERSION="2.0"
         LUCI_PACKAGE_NAME="luci-proto-amneziawg"
@@ -156,68 +156,36 @@ install_awg_packages() {
     AWG_DIR="/tmp/amneziawg"
     mkdir -p "$AWG_DIR"
 
-    if is_pkg_installed "kmod-amneziawg"; then
-        echo "kmod-amneziawg already installed"
-    else
-        KMOD_AMNEZIAWG_FILENAME=$(download_package "kmod-amneziawg" "$PKGPOSTFIX_BASE" "$AWG_DIR" "${BASE_URL}v${VERSION}/")
-        if [ $? -eq 0 ]; then
-            echo "kmod-amneziawg file downloaded successfully"
-        else
-            echo "Error downloading kmod-amneziawg. Please, install kmod-amneziawg manually and run the script again"
-            exit 1
-        fi
+    printf "\033[32;1mForce updating packages...\033[0m\n"
 
+    # Установка kmod
+    KMOD_AMNEZIAWG_FILENAME=$(download_package "kmod-amneziawg" "$PKGPOSTFIX_BASE" "$AWG_DIR" "${BASE_URL}v${VERSION}/")
+    if [ $? -eq 0 ]; then
+        echo "kmod-amneziawg file downloaded successfully"
         install_local_pkg "$AWG_DIR/$KMOD_AMNEZIAWG_FILENAME"
-
-        if [ $? -eq 0 ]; then
-            echo "kmod-amneziawg installed successfully"
-        else
-            echo "Error installing kmod-amneziawg. Please, install kmod-amneziawg manually and run the script again"
-            exit 1
-        fi
+    else
+        echo "Error downloading kmod-amneziawg. Please, install kmod-amneziawg manually"
+        exit 1
     fi
 
-    if is_pkg_installed "amneziawg-tools"; then
-        echo "amneziawg-tools already installed"
-    else
-        AMNEZIAWG_TOOLS_FILENAME=$(download_package "amneziawg-tools" "$PKGPOSTFIX_BASE" "$AWG_DIR" "${BASE_URL}v${VERSION}/")
-        if [ $? -eq 0 ]; then
-            echo "amneziawg-tools file downloaded successfully"
-        else
-            echo "Error downloading amneziawg-tools. Please, install amneziawg-tools manually and run the script again"
-            exit 1
-        fi
-
+    # Установка tools
+    AMNEZIAWG_TOOLS_FILENAME=$(download_package "amneziawg-tools" "$PKGPOSTFIX_BASE" "$AWG_DIR" "${BASE_URL}v${VERSION}/")
+    if [ $? -eq 0 ]; then
+        echo "amneziawg-tools file downloaded successfully"
         install_local_pkg "$AWG_DIR/$AMNEZIAWG_TOOLS_FILENAME"
-
-        if [ $? -eq 0 ]; then
-            echo "amneziawg-tools installed successfully"
-        else
-            echo "Error installing amneziawg-tools. Please, install amneziawg-tools manually and run the script again"
-            exit 1
-        fi
+    else
+        echo "Error downloading amneziawg-tools. Please, install amneziawg-tools manually"
+        exit 1
     fi
 
-    # Проверяем оба возможных названия пакета
-    if is_pkg_installed "luci-proto-amneziawg" || is_pkg_installed "luci-app-amneziawg"; then
-        echo "$LUCI_PACKAGE_NAME already installed"
-    else
-        LUCI_AMNEZIAWG_FILENAME=$(download_package "$LUCI_PACKAGE_NAME" "$PKGPOSTFIX_BASE" "$AWG_DIR" "${BASE_URL}v${VERSION}/")
-        if [ $? -eq 0 ]; then
-            echo "$LUCI_PACKAGE_NAME file downloaded successfully"
-        else
-            echo "Error downloading $LUCI_PACKAGE_NAME. Please, install $LUCI_PACKAGE_NAME manually and run the script again"
-            exit 1
-        fi
-
+    # Установка luci
+    LUCI_AMNEZIAWG_FILENAME=$(download_package "$LUCI_PACKAGE_NAME" "$PKGPOSTFIX_BASE" "$AWG_DIR" "${BASE_URL}v${VERSION}/")
+    if [ $? -eq 0 ]; then
+        echo "$LUCI_PACKAGE_NAME file downloaded successfully"
         install_local_pkg "$AWG_DIR/$LUCI_AMNEZIAWG_FILENAME"
-
-        if [ $? -eq 0 ]; then
-            echo "$LUCI_PACKAGE_NAME installed successfully"
-        else
-            echo "Error installing $LUCI_PACKAGE_NAME. Please, install $LUCI_PACKAGE_NAME manually and run the script again"
-            exit 1
-        fi
+    else
+        echo "Error downloading $LUCI_PACKAGE_NAME. Please, install manually"
+        exit 1
     fi
 
     # Устанавливаем русскую локализацию только для AWG 2.0
@@ -227,21 +195,12 @@ install_awg_packages() {
         INSTALL_RU_LANG=${INSTALL_RU_LANG:-n}
 
         if [ "$INSTALL_RU_LANG" = "y" ] || [ "$INSTALL_RU_LANG" = "Y" ]; then
-            if is_pkg_installed "luci-i18n-amneziawg-ru"; then
-                echo "luci-i18n-amneziawg-ru already installed"
+            LUCI_I18N_AMNEZIAWG_RU_FILENAME=$(download_package "luci-i18n-amneziawg-ru" "$PKGPOSTFIX_BASE" "$AWG_DIR" "${BASE_URL}v${VERSION}/")
+            if [ $? -eq 0 ]; then
+                echo "luci-i18n-amneziawg-ru file downloaded successfully"
+                install_local_pkg "$AWG_DIR/$LUCI_I18N_AMNEZIAWG_RU_FILENAME"
             else
-                LUCI_I18N_AMNEZIAWG_RU_FILENAME=$(download_package "luci-i18n-amneziawg-ru" "$PKGPOSTFIX_BASE" "$AWG_DIR" "${BASE_URL}v${VERSION}/")
-                if [ $? -eq 0 ]; then
-                    echo "luci-i18n-amneziawg-ru file downloaded successfully"
-                    install_local_pkg "$AWG_DIR/$LUCI_I18N_AMNEZIAWG_RU_FILENAME"
-                    if [ $? -eq 0 ]; then
-                        echo "luci-i18n-amneziawg-ru installed successfully"
-                    else
-                        echo "Warning: Error installing luci-i18n-amneziawg-ru (non-critical)"
-                    fi
-                else
-                    echo "Warning: Russian localization not available for this version/platform (non-critical)"
-                fi
+                echo "Warning: Russian localization not available for this version/platform (non-critical)"
             fi
         else
             printf "\033[32;1mSkipping Russian language pack installation.\033[0m\n"
