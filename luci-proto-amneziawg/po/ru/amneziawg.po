@@ -156,3 +156,45 @@ msgstr ""
 "Не определен фиксированный порт прослушивания интерфейса, поэтому узлы могут "
 "оказаться не в состоянии инициировать соединения с этим экземпляром "
 "AmneziaWG!"
+
+msgid "Header Protection Key"
+msgstr "Ключ защиты заголовка (Header Protection Key)"
+
+msgid "Optional. Base64-encoded key for header protection."
+msgstr "Необязательно. Ключ в формате Base64 для защиты заголовка."
+
+msgid "Rekey After Time"
+msgstr "Время до смены ключа (Rekey After Time)"
+
+msgid "Optional. Time in seconds (e.g. 100-120)."
+msgstr "Необязательно. Время в секундах (например, 100-120)."
+
+msgid "Rekey Timeout"
+msgstr "Тайм-аут смены ключа (Rekey Timeout)"
+
+msgid "Optional. Timeout in seconds (e.g. 3-8)."
+msgstr "Необязательно. Тайм-аут в секундах (например, 3-8)."
+
+msgid "Reject After Time"
+msgstr "Время отклонения пакетов (Reject After Time)"
+
+msgid "Optional. Time in seconds (e.g. 150-180)."
+msgstr "Необязательно. Время в секундах (например, 150-180)."
+
+msgid "Keepalive Timeout"
+msgstr "Тайм-аут поддержания активности (Keepalive Timeout)"
+
+msgid "Optional. Timeout in seconds (e.g. 7-13)."
+msgstr "Необязательно. Тайм-аут в секундах (например, 7-13)."
+
+msgid "Max Handshake Attempts"
+msgstr "Макс. попыток рукопожатия (Max Handshake Attempts)"
+
+msgid "Optional. Number of attempts (e.g. 15-20)."
+msgstr "Необязательно. Количество попыток (например, 15-20)."
+
+msgid "Content Padding Addition"
+msgstr "Добавочные байты (Content Padding Addition)"
+
+msgid "Optional. Padding size in bytes (e.g. 10-100)."
+msgstr "Необязательно. Размер добавки в байтах (например, 10-100)."
