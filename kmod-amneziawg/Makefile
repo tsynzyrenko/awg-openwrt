@@ -15,22 +15,20 @@ MAKE_PATH:=src
 include $(INCLUDE_DIR)/package.mk
 
 define KernelPackage/amneziawg
-	SECTION:=kernel
-	CATEGORY:=Kernel modules
-	SUBMENU:=Network Support
-	TITLE:=AmneziaWG VPN Kernel Module
-	FILES:=$(PKG_BUILD_DIR)/$(MAKE_PATH)/amneziawg.ko
-	DEPENDS:= \
-		+kmod-udptunnel4 \
-		+kmod-udptunnel6 \
-		+kmod-crypto-lib-chacha20poly1305 \
-		+kmod-crypto-lib-curve25519
+  SECTION:=kernel
+  CATEGORY:=Kernel modules
+  SUBMENU:=Network Support
+  TITLE:=AmneziaWG VPN Kernel Module
+  FILES:=$(PKG_BUILD_DIR)/$(MAKE_PATH)/amneziawg.ko
+  DEPENDS:= \
+      +kmod-udptunnel4 \
+      +kmod-udptunnel6 \
+      +kmod-crypto-lib-chacha20poly1305 \
+      +kmod-crypto-lib-curve25519
 endef
 
-define Build/Prepare
-	$(call Build/Prepare/Default)
-	mkdir -p $(PKG_BUILD_DIR)/$(MAKE_PATH)/kernel
-	$(CP) $(LINUX_DIR)/* $(PKG_BUILD_DIR)/$(MAKE_PATH)/kernel/
+define KernelPackage/amneziawg/description
+  AmneziaWG is a fork of WireGuard. This package provides the kernel module.
 endef
 
 define Build/Compile
@@ -38,7 +36,6 @@ define Build/Compile
 		$(KERNEL_MAKE_FLAGS) \
 		M="$(PKG_BUILD_DIR)/$(MAKE_PATH)" \
 		EXTRA_CFLAGS="$(BUILDFLAGS)" \
-		WIREGUARD_VERSION="$(WIREGUARD_VERSION)" \
 		modules
 endef
 
