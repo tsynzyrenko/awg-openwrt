@@ -33,7 +33,7 @@
 Подключитесь к роутеру по SSH и выполните команду для скачивания и запуска скрипта:
 
 ```bash
-wget -O amneziawg-install.sh [https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh](https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh) && sh amneziawg-install.sh
+wget -O amneziawg-install.sh https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh && sh amneziawg-install.sh
 ```
 
 **Тихий режим (только скачивание и обновление пакетов):**
