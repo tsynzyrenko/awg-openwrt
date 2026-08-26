@@ -16,8 +16,7 @@
 ## 📦 Готовые релизы (Скомпилированные пакеты)
 На данный момент автоматическая сборка завершена и протестирована для следующих версий OpenWrt. Вы можете скачать пакеты вручную по ссылкам ниже или воспользоваться автоматическим скриптом установки:
 
-* [Релиз для OpenWrt 24.10.4](https://github.com/tsynzyrenko/awg-openwrt/releases/tag/v24.10.4)
-* [Релиз для OpenWrt 24.10.3](https://github.com/tsynzyrenko/awg-openwrt/releases/tag/v24.10.3)
+
 * [Релиз для OpenWrt 24.10.2](https://github.com/tsynzyrenko/awg-openwrt/releases/tag/v24.10.2)
 
 *(Новые версии будут добавляться по мере выхода).*
