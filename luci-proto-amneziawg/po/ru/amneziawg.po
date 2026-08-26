@@ -198,3 +198,20 @@ msgstr "Добавочные байты (Content Padding Addition)"
 
 msgid "Optional. Padding size in bytes (e.g. 10-100)."
 msgstr "Необязательно. Размер добавки в байтах (например, 10-100)."
+msgid "Random Trailers"
+msgstr "Случайные трейлеры (Random Trailers)"
+
+msgid "Optional. Adds random bytes to the end of packets to protect against DPI."
+msgstr "Необязательно. Добавляет случайные байты в конец пакетов для защиты от DPI-анализа."
+
+msgid "Disable Cookies"
+msgstr "Отключить Cookies (Disable Cookies)"
+
+msgid "Optional. Prevents sending cookie replies under load, protecting against active port scanning."
+msgstr "Необязательно. Запрещает отправку cookie-ответов под нагрузкой для защиты от активного сканирования портов."
+
+msgid "Off (Default)"
+msgstr "Выкл (По умолчанию)"
+
+msgid "On"
+msgstr "Вкл"
