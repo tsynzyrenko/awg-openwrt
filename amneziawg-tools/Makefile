@@ -2,12 +2,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=amneziawg-tools
 PKG_VERSION:=3.1.20260812
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/amnezia-vpn/amneziawg-tools.git
 # Version: latest stable release tag
-# TODO: при следующем обновлении убрать -2
 PKG_SOURCE_VERSION:=v$(PKG_VERSION)
 
 PKG_LICENSE:=GPL-2.0
@@ -28,14 +27,14 @@ define Package/amneziawg-tools
   MAINTAINER:=Amnezia Admin <admin@amnezia.org>
   TITLE:=AmneziaWG userspace control program (awg)
   DEPENDS:= \
-	  +!BUSYBOX_CONFIG_IP:ip \
-	  +!BUSYBOX_CONFIG_FEATURE_IP_LINK:ip \
-	  +kmod-amneziawg
+      +!BUSYBOX_CONFIG_IP:ip \
+      +!BUSYBOX_CONFIG_FEATURE_IP_LINK:ip \
+      +kmod-amneziawg
 endef
 
 define Package/amneziawg-tools/description
   Amnezia VPN — simple and free app to run a self-hosted VPN with
-	high privacy requirements.
+    high privacy requirements.
 
   This package provides the userspace control program for AmneziaWG,
   `awg`, a netifd protocol helper, and a re-resolve watchdog script.
