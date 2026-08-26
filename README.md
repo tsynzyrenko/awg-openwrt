@@ -14,7 +14,7 @@
 ## 🌟 Главные отличия этого форка:
 * **Поддержка AmneziaWG 3.1:** Пакеты собираются с поддержкой новых параметров обфускации (например, `HeaderProtectionKey`, диапазоны таймингов `RekeyTimeout = 3-8` и др.).
 * **Принудительное обновление (Force Update):** Скрипт установки научился корректно обновлять старые версии пакетов поверх существующих без ошибок "already installed".
-* **Улучшенная совместимость:** Скрипт правильно распознает актуальные релизы ветки **24.10.x** и устанавливает современный интерфейс `luci-proto-amneziawg`.
+* **Улучшенная совместимость:** Скрипт правильно распознает актуальные релизы ветки **24.10.2 и выше** и устанавливает современный интерфейс `luci-proto-amneziawg`.
 
 ---
 
@@ -34,8 +34,17 @@
 Если ваш роутер обладает достаточным объемом ROM, воспользуйтесь скриптом. Он автоматически определит архитектуру процессора, скачает нужные пакеты из нужного релиза этого репозитория и предложит настроить интерфейс.
 
 Подключитесь к роутеру по SSH и выполните команду для скачивания и запуска скрипта:
+
 ```bash
 wget -O amneziawg-install.sh [https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh](https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh) && sh amneziawg-install.sh
+```
+
+**Тихий режим (только скачивание и обновление пакетов):**
+Если вам не нужно, чтобы скрипт задавал вопросы и настраивал интерфейс, используйте ключ `-n`:
+
+```bash
+wget -O amneziawg-install.sh [https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh](https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh) && sh amneziawg-install.sh -n
+```
 
 
 
