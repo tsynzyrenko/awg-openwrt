@@ -42,7 +42,7 @@ wget -O amneziawg-install.sh [https://raw.githubusercontent.com/tsynzyrenko/awg-
 ```
 
 **Тихий режим (только скачивание и обновление пакетов):**
-Если вам не нужно, чтобы скрипт задавал вопросы и настраивал интерфейс (например, вы хотите настроить всё сами или через Podkop), используйте ключ `-n`:
+Если вам не нужно, чтобы скрипт задавал вопросы и настраивал интерфейс (например, вы хотите настроить всё сами после установки), используйте ключ `-n`:
 
 ```bash
 wget -O amneziawg-install.sh [https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh](https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh) && sh amneziawg-install.sh -n
