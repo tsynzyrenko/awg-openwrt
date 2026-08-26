@@ -319,6 +319,17 @@ return network.registerProtocol('amneziawg', {
         o.datatype = 'string';
         o.optional = true;
 
+        o = s.taboption('amneziawg', form.ListValue, 'awg_random_trailers', _('Random Trailers'), _('Optional. Adds random bytes to the end of packets to protect against DPI.'));
+        o.value('', _('Off (Default)'));
+        o.value('1', _('On'));
+        o.optional = true;
+
+        o = s.taboption('amneziawg', form.ListValue, 'awg_disable_cookies', _('Disable Cookies'), _('Optional. Prevents sending cookie replies under load, protecting against active port scanning.'));
+        o.value('', _('Off (Default)'));
+        o.value('1', _('On'));
+        o.optional = true;
+	
+
         // -- peers -----------------------------------------------------------------------
 
 		// -- peers -----------------------------------------------------------------------
@@ -498,6 +509,8 @@ return network.registerProtocol('amneziawg', {
                     s.getOption('awg_keepalive_timeout').getUIElement(s.section).setValue(config.interface_keepalivetimeout || '');
                     s.getOption('awg_max_handshake_attempts').getUIElement(s.section).setValue(config.interface_maxhandshakeattempts || '');
                     s.getOption('awg_content_padding_addition').getUIElement(s.section).setValue(config.interface_contentpaddingaddition || '');
+                    s.getOption('awg_random_trailers').getUIElement(s.section).setValue(config.interface_randomtrailers || '');
+                    s.getOption('awg_disable_cookies').getUIElement(s.section).setValue(config.interface_disablecookies || '');
 
                     if (config.interface_dns)
 						s.getOption('dns').getUIElement(s.section).setValue(config.interface_dns);
@@ -854,6 +867,8 @@ return network.registerProtocol('amneziawg', {
                 kat = s.formvalue(s.section, 'awg_keepalive_timeout'),
                 mha = s.formvalue(s.section, 'awg_max_handshake_attempts'),
                 cpa = s.formvalue(s.section, 'awg_content_padding_addition'),
+                art = s.formvalue(s.section, 'awg_random_trailers'),
+                adc = s.formvalue(s.section, 'awg_disable_cookies'),
                 prv = this.section.formvalue(section_id, 'private_key'),
 			    psk = this.section.formvalue(section_id, 'preshared_key'),
 			    eport = this.section.formvalue(section_id, 'endpoint_port'),
@@ -893,6 +908,8 @@ return network.registerProtocol('amneziawg', {
                 kat ? 'KeepaliveTimeout = ' + kat : '# KeepaliveTimeout not defined',
                 mha ? 'MaxHandshakeAttempts = ' + mha : '# MaxHandshakeAttempts not defined',
                 cpa ? 'ContentPaddingAddition = ' + cpa : '# ContentPaddingAddition not defined',
+                art ? 'RandomTrailers = ' + art : '# RandomTrailers not defined',
+                adc ? 'DisableCookies = ' + adc : '# DisableCookies not defined',          
                 '',
                 '[Peer]',
 				'PublicKey = ' + pub,
