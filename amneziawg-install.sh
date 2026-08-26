@@ -263,6 +263,8 @@ configure_amneziawg_interface() {
         read -r -p "Enter KeepaliveTimeout (from [Interface]) [optional, e.g. 7-13]:"$'\n' AWG_KAT
         read -r -p "Enter MaxHandshakeAttempts (from [Interface]) [optional, e.g. 15-20]:"$'\n' AWG_MHA
         read -r -p "Enter ContentPaddingAddition (from [Interface]) [optional, e.g. 10-100]:"$'\n' AWG_CPA
+        read -r -p "Enter RandomTrailers (from [Interface]) [optional, 1 to enable]:"$'\n' AWG_RTRL
+        read -r -p "Enter DisableCookies (from [Interface]) [optional, 1 to enable]:"$'\n' AWG_DCOOK
     fi
 
     uci set network.${INTERFACE_NAME}=interface
@@ -297,6 +299,8 @@ configure_amneziawg_interface() {
         [ -n "$AWG_KAT" ] && uci set network.${INTERFACE_NAME}.awg_keepalive_timeout=$AWG_KAT
         [ -n "$AWG_MHA" ] && uci set network.${INTERFACE_NAME}.awg_max_handshake_attempts=$AWG_MHA
         [ -n "$AWG_CPA" ] && uci set network.${INTERFACE_NAME}.awg_content_padding_addition=$AWG_CPA
+        [ -n "$AWG_RTRL" ] && uci set network.${INTERFACE_NAME}.awg_random_trailers=$AWG_RTRL
+        [ -n "$AWG_DCOOK" ] && uci set network.${INTERFACE_NAME}.awg_disable_cookies=$AWG_DCOOK
     fi
 
     if ! uci show network | grep -q ${CONFIG_NAME}; then
