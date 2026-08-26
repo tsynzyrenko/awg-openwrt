@@ -44,8 +44,11 @@ proto_amneziawg_init_config() {
     proto_config_add_string "awg_keepalive_timeout"
     proto_config_add_string "awg_max_handshake_attempts"
     proto_config_add_string "awg_content_padding_addition"
+    proto_config_add_int "awg_random_trailers"
+    proto_config_add_int "awg_disable_cookies"
+        
 # shellcheck disable=SC2034
-	available=1
+    available=1
 # shellcheck disable=SC2034
 	no_proto_task=1
 }
@@ -204,6 +207,8 @@ proto_amneziawg_setup() {
     local awg_keepalive_timeout
     local awg_max_handshake_attempts
     local awg_content_padding_addition
+	local awg_random_trailers
+    local awg_disable_cookies
 
 	ensure_key_is_generated "${config}"
 
@@ -240,6 +245,8 @@ proto_amneziawg_setup() {
     config_get awg_keepalive_timeout "${config}" "awg_keepalive_timeout"
     config_get awg_max_handshake_attempts "${config}" "awg_max_handshake_attempts"
     config_get awg_content_padding_addition "${config}" "awg_content_padding_addition"
+	config_get awg_random_trailers "${config}" "awg_random_trailers"
+    config_get awg_disable_cookies "${config}" "awg_disable_cookies"
 
 	if proto_amneziawg_is_kernel_mode; then
 		logger -t "amneziawg" "info: using kernel-space kmod-amneziawg for ${AWG}"
@@ -336,6 +343,13 @@ proto_amneziawg_setup() {
     fi
     if [ "${awg_content_padding_addition}" ]; then
         echo "ContentPaddingAddition=${awg_content_padding_addition}" >> "${awg_cfg}"
+    fi
+
+	if [ "${awg_random_trailers}" ]; then
+        echo "RandomTrailers=${awg_random_trailers}" >> "${awg_cfg}"
+    fi
+    if [ "${awg_disable_cookies}" ]; then
+        echo "DisableCookies=${awg_disable_cookies}" >> "${awg_cfg}"
     fi
 	config_foreach proto_amneziawg_setup_peer "amneziawg_${config}"
 
