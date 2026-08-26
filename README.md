@@ -25,7 +25,7 @@
 * [Релиз для OpenWrt 24.10.3](https://github.com/tsynzyrenko/awg-openwrt/releases/tag/v24.10.3)
 * [Релиз для OpenWrt 24.10.2](https://github.com/tsynzyrenko/awg-openwrt/releases/tag/v24.10.2)
 
-*(Новые версии будут добавляться по мере выхода обновлений OpenWrt).*
+*(Новые версии будут добавляться по мере выхода).*
 
 ---
 
