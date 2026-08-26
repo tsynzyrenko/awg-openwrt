@@ -1,7 +1,7 @@
 # ⚠️ ВНИМАНИЕ: ПРОЕКТ В СТАДИИ НАСТРОЙКИ И ТЕСТИРОВАНИЯ ⚠️
 **Пожалуйста, пока не используйте скрипты из этого репозитория в production. Идет обновление инфраструктуры до версии AmneziaWG 3.1. Как только всё будет готово, эта надпись исчезнет.**
 
-*(Примечание: Если у вас версия OpenWrt 24.10.2, вы можете протестировать установку командой: `wget -O amneziawg-install.sh https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh && sh amneziawg-install.sh -n`. Обновление пакетов и ядра проходит успешно).*
+*(Примечание: Если у вас версия OpenWrt 24.10.2 и версия 24.10.3 вы можете протестировать установку командой: `wget -O amneziawg-install.sh https://raw.githubusercontent.com/tsynzyrenko/awg-openwrt/master/amneziawg-install.sh && sh amneziawg-install.sh -n`. Обновление пакетов и ядра проходит успешно).Если у вас уже установлены и работают интерфейсы AmneziaWG 2.0, то они также продолжат работать*
 
 ---
 
